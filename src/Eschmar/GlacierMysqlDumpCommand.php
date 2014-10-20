@@ -121,6 +121,9 @@ class GlacierMysqlDumpCommand extends Command
             $output->writeln(" \033[1;31m[ERROR]: " . $e->getMessage());
         }
 
+        // file was compressed and has new extension
+        $filename .= '.gz';
+
         // write dump to amazon glacier if chosen
         if ($glacier) {
             if (!is_file($this->dump_dir.$filename)) {
