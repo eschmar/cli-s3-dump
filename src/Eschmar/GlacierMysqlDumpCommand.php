@@ -9,6 +9,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Yaml\Parser;
 use Ifsnop\Mysqldump as IMysqldump;
+use Aws\Glacier\GlacierClient;
 
 /**
  * Command for dumping a mysql database and writing it to Amazon Glacier.
@@ -91,7 +92,7 @@ class GlacierMysqlDumpCommand extends Command
 
         // check amazon glacier configuration
         $glacier = $input->getOption('aws-glacier');
-        if ($glacier && (!isset($this->config['aws']['glacier']) || !$this->checkForKeys($this->config['aws']['glacier'], array('key', 'secret', 'region')))) {
+        if ($glacier && (!isset($this->config['aws']['glacier']) || !$this->checkForKeys($this->config['aws']['glacier'], array('key', 'secret', 'region', 'vault')))) {
             $output->writeln(" \033[1;31m[ERROR]: Invalid amazon glacier configuration. Check config.yml.");
             return;
         }
@@ -122,8 +123,29 @@ class GlacierMysqlDumpCommand extends Command
 
         // write dump to amazon glacier if chosen
         if ($glacier) {
-            $output->writeln(" \033[1;32m[TODO]: AWS Glacier implementation.");
-            $output->writeln(" \033[36mSkiping Glacier...");
+            if (!is_file($this->dump_dir.$filename)) {
+                $output->writeln(" \033[1;31m[ERROR]: Unable to find dumped file.");
+                return;
+            }
+
+            try {
+                $client = GlacierClient::factory(array(
+                    'key'    => $this->config['aws']['glacier']['key'],
+                    'secret' => $this->config['aws']['glacier']['secret'],
+                    'region' => $this->config['aws']['glacier']['region']
+                ));
+
+                $result = $client->uploadArchive([
+                    'vaultName' => $this->config['aws']['glacier']['vault'],
+                    'body' => fopen($this->dump_dir.$filename, 'r')
+                ]);
+
+                $archiveId = $result->get('archiveId');
+                $output->writeln("\033[0;0m ...wrote #\033[36m$archiveId\033[0;0m to \033[36mGlacier \033[0;0m.");
+            } catch (\Exception $e) {
+                $output->writeln(" \033[1;31m[AWS ERROR]: " . $e->getMessage());
+                $output->writeln(" \033[36mSkiping Glacier...");
+            }
         }
  
         $end = time();

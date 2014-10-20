@@ -8,3 +8,4 @@ aws:
         key: 'your-aws-access-key-id'
         secret: 'your-aws-secret-access-key'
         region: 'us-east-1'
+        vault: 'vaultName'

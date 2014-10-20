@@ -2,7 +2,9 @@
 
 ## todo
 * [x] move credentials to config file rather than inputs
-* [ ] add logic for writing to Amazon Glacier storage
+* [x] add logic for writing to Amazon Glacier storage
+* [ ] test aws glacier implementation
 * [ ] improve naming
 * [ ] check licensing for .phar packageing
 * [ ] serve .phar package
+* [ ] define repository license
