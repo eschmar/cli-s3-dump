@@ -1,0 +1,10 @@
+database:
+    user: root
+    password: null
+    name: symfony
+
+aws:
+    glacier:
+        key: 'your-aws-access-key-id'
+        secret: 'your-aws-secret-access-key'
+        region: 'us-east-1'
