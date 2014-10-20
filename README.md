@@ -4,7 +4,7 @@
 * [x] move credentials to config file rather than inputs
 * [x] add logic for writing to Amazon Glacier storage
 * [ ] test aws glacier implementation
-* [ ] improve naming
+* [x] improve naming
 * [ ] check licensing for .phar packageing
 * [ ] serve .phar package
 * [ ] define repository license

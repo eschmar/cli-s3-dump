@@ -16,7 +16,7 @@ use Aws\Glacier\GlacierClient;
  *
  * @author Marcel Eschmann
  **/
-class GlacierMysqlDumpCommand extends Command
+class GlacierDumpCommand extends Command
 {
     /**
      * Default timestamp format for filenames.
@@ -173,4 +173,4 @@ class GlacierMysqlDumpCommand extends Command
         return true;
     }
 
-} // END class GlacierMysqlDumpCommand extends Command
+} // END class GlacierDumpCommand extends Command
