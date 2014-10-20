@@ -52,10 +52,10 @@ class GlacierMysqlDumpCommand extends Command
             ->setDescription('Dumps a MySQL database and writes it to Amazon Glacier')
             ->addArgument('location', InputArgument::OPTIONAL, 'Write dumps to this directory (with trailing slash).')
             ->addOption(
-               'aws-glacier',
+               'skip-glacier',
                null,
                InputOption::VALUE_NONE,
-               'If set, the dump will be uploaded to Amazon Glacier'
+               'If set, the dump will not be uploaded to Amazon Glacier and remain in the target directory.'
             )
         ;
     }
@@ -91,7 +91,7 @@ class GlacierMysqlDumpCommand extends Command
         }
 
         // check amazon glacier configuration
-        $glacier = $input->getOption('aws-glacier');
+        $glacier = !$input->getOption('skip-glacier');
         if ($glacier && (!isset($this->config['aws']['glacier']) || !$this->checkForKeys($this->config['aws']['glacier'], array('key', 'secret', 'region', 'vault')))) {
             $output->writeln(" \033[1;31m[ERROR]: Invalid amazon glacier configuration. Check config.yml.");
             return;
