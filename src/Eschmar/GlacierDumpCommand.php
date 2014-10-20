@@ -119,6 +119,7 @@ class GlacierDumpCommand extends Command
             $dump->start($this->dump_dir . $filename);
         } catch (\Exception $e) {
             $output->writeln(" \033[1;31m[ERROR]: " . $e->getMessage());
+            return;
         }
 
         // file was compressed and has new extension
