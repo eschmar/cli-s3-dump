@@ -148,7 +148,7 @@ class GlacierDumpCommand extends Command
                 $output->writeln("\033[0;0m ...wrote #\033[36m$archiveId\033[0;0m to \033[36mGlacier \033[0;0m.");
             } catch (\Exception $e) {
                 $output->writeln(" \033[1;31m[AWS ERROR]: " . $e->getMessage());
-                $output->writeln(" \033[36mSkiping Glacier...");
+                $output->writeln(" \033[36mSkipping Glacier...");
             }
         }
  
