@@ -9,21 +9,21 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Yaml\Parser;
 use Ifsnop\Mysqldump as IMysqldump;
-use Aws\Glacier\GlacierClient;
+use Aws\S3\S3Client;
 
 /**
- * Command for dumping a mysql database and writing it to Amazon Glacier.
+ * Command for dumping a mysql database and writing it to Amazon S3.
  *
  * @author Marcel Eschmann
  **/
-class GlacierDumpCommand extends Command
+class S3DumpCommand extends Command
 {
     /**
      * Config file name.
      *
      * @var string
      **/
-    protected $config_file = 'glacier.yml';
+    protected $config_file = 's3dump.yml';
 
     /**
      * Default timestamp format for filenames.
@@ -56,13 +56,13 @@ class GlacierDumpCommand extends Command
     {
         $this
             ->setName('dump')
-            ->setDescription('Dumps a MySQL database and writes it to Amazon Glacier')
+            ->setDescription('Dumps a MySQL database and writes it to Amazon S3')
             ->addArgument('location', InputArgument::OPTIONAL, 'Write dumps to this directory (with trailing slash).')
             ->addOption(
-               'skip-glacier',
+               'skip-s3',
                null,
                InputOption::VALUE_NONE,
-               'If set, the dump will not be uploaded to Amazon Glacier and remain in the target directory.'
+               'If set, the dump will not be uploaded to Amazon S3 and remain in the target directory.'
             )
         ;
     }
@@ -97,10 +97,10 @@ class GlacierDumpCommand extends Command
             return;
         }
 
-        // check amazon glacier configuration
-        $glacier = !$input->getOption('skip-glacier');
-        if ($glacier && (!isset($this->config['aws']['glacier']) || !$this->checkForKeys($this->config['aws']['glacier'], array('key', 'secret', 'region', 'vault')))) {
-            $output->writeln(" \033[1;31m[ERROR]: Invalid amazon glacier configuration. Check {$this->config_file}.");
+        // check amazon s3 configuration
+        $s3 = !$input->getOption('skip-s3');
+        if ($s3 && (!isset($this->config['aws']['s3']) || !$this->checkForKeys($this->config['aws']['s3'], array('key', 'secret', 'bucket')))) {
+            $output->writeln(" \033[1;31m[ERROR]: Invalid amazon s3 configuration. Check {$this->config_file}.");
             return;
         }
 
@@ -132,36 +132,41 @@ class GlacierDumpCommand extends Command
         // file was compressed and has new extension
         $filename .= '.gz';
 
-        // write dump to amazon glacier if chosen
-        if ($glacier) {
+        $end = time();
+        $elapsed = $end-$start;
+        $output->writeln("\033[0;0m ...generated \033[36m{$this->dump_dir}$filename\033[0;0m in \033[36m$elapsed\033[0;0m seconds.");
+
+        // write dump to amazon s3 if chosen
+        if ($s3) {
             if (!is_file($this->dump_dir.$filename)) {
                 $output->writeln(" \033[1;31m[ERROR]: Unable to find dumped file.");
                 return;
             }
 
             try {
-                $client = GlacierClient::factory(array(
-                    'key'    => $this->config['aws']['glacier']['key'],
-                    'secret' => $this->config['aws']['glacier']['secret'],
-                    'region' => $this->config['aws']['glacier']['region']
+                $client = S3Client::factory(array(
+                    'key'    => $this->config['aws']['s3']['key'],
+                    'secret' => $this->config['aws']['s3']['secret']
                 ));
 
-                $result = $client->uploadArchive([
-                    'vaultName' => $this->config['aws']['glacier']['vault'],
-                    'body' => fopen($this->dump_dir.$filename, 'r')
+                $result = $client->putObject([
+                    'Key' => $this->config['database']['name'] . '/' . $filename,
+                    'Bucket' => $this->config['aws']['s3']['bucket'],
+                    'Body' => fopen($this->dump_dir.$filename, 'r'),
+                    'ContentType' => 'application/gzip'
                 ]);
 
-                $archiveId = $result->get('archiveId');
-                $output->writeln("\033[0;0m ...wrote #\033[36m$archiveId\033[0;0m to \033[36mGlacier\033[0;0m.");
+                $output->writeln("\033[0;0m ...wrote \033[36m$filename\033[0;0m to \033[36mS3\033[0;0m.");
             } catch (\Exception $e) {
                 $output->writeln(" \033[1;31m[AWS ERROR]: " . $e->getMessage());
-                $output->writeln(" \033[36mSkipping Glacier...");
+                $output->writeln(" \033[36mSkipping S3...");
             }
         }
- 
-        $end = time();
-        $elapsed = $end-$start;
-        $output->writeln("\033[0;0m ...generated \033[36m{$this->dump_dir}$filename\033[0;0m in \033[36m$elapsed\033[0;0m seconds.");
+
+        // delete temporary dumps directory
+        if ($s3 && !$this->destroyDir($this->dump_dir)) {
+            $output->writeln(" \033[1;31m[ERROR]: Unable to delete temporary folder.");
+        }
     }
 
     /**
@@ -181,4 +186,32 @@ class GlacierDumpCommand extends Command
         return true;
     }
 
-} // END class GlacierDumpCommand extends Command
+    /**
+     * Deletes a folder and all of its contents
+     *
+     * @return boolean
+     * @author Marcel Eschamnn
+     **/
+    protected function destroyDir($path)
+    {
+        if (!is_dir($path)) {
+            return false;
+        }
+
+        try {
+            $files = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path), \RecursiveIteratorIterator::CHILD_FIRST);
+            foreach ($files as $file) {
+                if (!in_array($file->getBasename(), ['.', '..'])) {
+                    if ($file->isDir()) {
+                        $this->destroyDir($file->getPathname());
+                    }else {
+                        unlink($file->getPathname());
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
+} // END class S3DumpCommand extends Command

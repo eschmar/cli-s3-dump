@@ -1,4 +1,4 @@
 /vendor
 /dumps
 composer.lock
-glacier.yml
+s3dump.yml
