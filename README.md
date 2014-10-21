@@ -1,5 +1,5 @@
 # cli-s3-dump
-This is a simple console application for dumping your mysql databases and uploading them to an Amazon S3 bucket. With the integration of Amazon Glacier in S3 you can easily move older dumps to the low-cost archive storage service while having recent dumps at your fingertips. That's why I built this tool.
+This is a simple console application for generating mysql dumps and storing them in an Amazon S3 Bucket via PHP. With the integration of Amazon Glacier in S3 you can easily move older dumps to the low-cost archive storage service while having recent dumps at your fingertips. That's why I built this tool.
 
 ## requirements
 * php >5.4
@@ -12,7 +12,7 @@ This is a simple console application for dumping your mysql databases and upload
     ```
     $ curl -LSs https://github.com/eschmar/cli-s3-dump/releases/download/0.1/s3dump.phar
     ```
-    
+
 2. Write your credentials into a yaml config file. You can use ``d3dump_example.yml`` as a starting point.
 
 *You may also use the tool without the phar binary. Just fork/clone/download the project, install all dependencies using composer and you're all set.*
@@ -38,7 +38,8 @@ $ php box.phar build -v
 The first line will install box and the second will build the actual binary. Please check the [project website](https://github.com/box-project/box2) for more information.
 
 ## credits
-// **todo.**
+* Uses [MySQLDump - PHP](https://github.com/ifsnop/mysqldump-php) for generating the dumps.
+* Uses [AWS SDK for PHP](https://github.com/aws/aws-sdk-php) for S3 integration.
 
 ## license
 As required by [mysqldump-php](https://github.com/ifsnop/mysqldump-php), this project is open-sourced software licensed under the [GPL license](http://www.gnu.org/copyleft/gpl.html)
