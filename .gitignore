@@ -1,3 +1,4 @@
 /vendor
 /dumps
 composer.lock
+glacier.yml

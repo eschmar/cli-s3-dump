@@ -19,6 +19,13 @@ use Aws\Glacier\GlacierClient;
 class GlacierDumpCommand extends Command
 {
     /**
+     * Config file name.
+     *
+     * @var string
+     **/
+    protected $config_file = 'glacier.yml';
+
+    /**
      * Default timestamp format for filenames.
      *
      * @var string
@@ -33,7 +40,7 @@ class GlacierDumpCommand extends Command
     protected $dump_dir = 'dumps/';
 
     /**
-     * Configuration read from config.yml.
+     * Configuration read from config file.
      *
      * @var array
      **/
@@ -71,29 +78,29 @@ class GlacierDumpCommand extends Command
         $output->writeln("");
         $start = time();
 
-        if (!file_exists('config.yml')) {
-            $output->writeln(" \033[1;31m[ERROR]: No config.yml file found.");
+        if (!file_exists($this->config_file)) {
+            $output->writeln(" \033[1;31m[ERROR]: No {$this->config_file} file found.");
             return;
         }
 
         try {
             $yaml = new Parser();
-            $this->config = $yaml->parse(file_get_contents('config.yml'));
+            $this->config = $yaml->parse(file_get_contents($this->config_file));
         } catch (\Exception $e) {
-            $output->writeln(" \033[1;31m[ERROR]: Not able to parse config.yml. Please check for syntax errors.");
+            $output->writeln(" \033[1;31m[ERROR]: Not able to parse {$this->config_file}. Please check for syntax errors.");
             return;
         }
 
         // check database configuration
         if (!isset($this->config['database']) || !$this->checkForKeys($this->config['database'], array('user', 'password', 'name'))) {
-            $output->writeln(" \033[1;31m[ERROR]: Invalid database configuration. Check config.yml.");
+            $output->writeln(" \033[1;31m[ERROR]: Invalid database configuration. Check {$this->config_file}.");
             return;
         }
 
         // check amazon glacier configuration
         $glacier = !$input->getOption('skip-glacier');
         if ($glacier && (!isset($this->config['aws']['glacier']) || !$this->checkForKeys($this->config['aws']['glacier'], array('key', 'secret', 'region', 'vault')))) {
-            $output->writeln(" \033[1;31m[ERROR]: Invalid amazon glacier configuration. Check config.yml.");
+            $output->writeln(" \033[1;31m[ERROR]: Invalid amazon glacier configuration. Check {$this->config_file}.");
             return;
         }
 
@@ -145,7 +152,7 @@ class GlacierDumpCommand extends Command
                 ]);
 
                 $archiveId = $result->get('archiveId');
-                $output->writeln("\033[0;0m ...wrote #\033[36m$archiveId\033[0;0m to \033[36mGlacier \033[0;0m.");
+                $output->writeln("\033[0;0m ...wrote #\033[36m$archiveId\033[0;0m to \033[36mGlacier\033[0;0m.");
             } catch (\Exception $e) {
                 $output->writeln(" \033[1;31m[AWS ERROR]: " . $e->getMessage());
                 $output->writeln(" \033[36mSkipping Glacier...");
