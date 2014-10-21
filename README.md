@@ -38,8 +38,11 @@ $ php box.phar build -v
 The first line will install box and the second will build the actual binary. Please check the [project website](https://github.com/box-project/box2) for more information.
 
 ## credits
-* Uses [MySQLDump - PHP](https://github.com/ifsnop/mysqldump-php) for generating the dumps.
-* Uses [AWS SDK for PHP](https://github.com/aws/aws-sdk-php) for S3 integration.
+Uses...
+* [MySQLDump - PHP](https://github.com/ifsnop/mysqldump-php) for generating the dumps.
+* [AWS SDK for PHP](https://github.com/aws/aws-sdk-php) for S3 integration.
+* [Symfony Console](https://github.com/symfony/Console) for the command line interface.
+* [Symfony Yaml](https://github.com/symfony/Yaml) for config parsing.
 
 ## license
-MIT License. Please check the dependencies for their licsenes.
+MIT License. Please check the dependencies for their licensing.
