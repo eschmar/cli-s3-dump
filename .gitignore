@@ -1,4 +1,13 @@
+# dependencies
 /vendor
-/dumps
 composer.lock
+
+# temporary dumps
+/dumps
+
+# credentials
 s3dump.yml
+
+# phar packaging
+box.phar
+s3dump.phar

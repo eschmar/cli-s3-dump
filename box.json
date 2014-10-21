@@ -1,0 +1,17 @@
+{
+    "files": [
+        "vendor/autoload.php"
+    ],
+    "directories": [
+        "vendor/aws/aws-sdk-php/src/Aws/Common",
+        "vendor/aws/aws-sdk-php/src/Aws/S3",
+        "vendor/composer",
+        "vendor/guzzle/guzzle/src",
+        "vendor/ifsnop/mysqldump-php/src",
+        "vendor/symfony",
+        "src"
+    ],
+    "main": "s3dump.php",
+    "output": "s3dump.phar",
+    "stub": true
+}
