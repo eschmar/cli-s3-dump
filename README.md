@@ -8,12 +8,12 @@ This is a simple console application for dumping your mysql databases and upload
 
 ## installation
 1. Get the phar:
-    ```
-    $ curl -LSs https://github.com/eschmar/cli-s3-dump/releases/download/0.1/s3dump.phar
-    ```
+```
+$ curl -LSs https://github.com/eschmar/cli-s3-dump/releases/download/0.1/s3dump.phar
+```
 2. Write your credentials into a yaml config file. You can use ``d3dump_example.yml`` as a starting point.
 
-You may also use the tool without the phar binary. Just fork/clone/download the project, install all dependencies using composer and you're all set.
+*You may also use the tool without the phar binary. Just fork/clone/download the project, install all dependencies using composer and you're all set.*
 
 ## usage
 ```sh
