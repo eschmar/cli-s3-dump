@@ -1,5 +1,5 @@
 # cli-s3-dump
-This is a simple console application for generating mysql dumps and storing them in an Amazon S3 Bucket via PHP. With the integration of Amazon Glacier in S3 you can easily move older dumps to the low-cost archive storage service while having recent dumps at your fingertips. That's why I built this tool.
+This is a simple console application for [generating mysql dumps](https://github.com/ifsnop/mysqldump-php) and storing them in an [Amazon S3 Bucket](https://github.com/aws/aws-sdk-php) via PHP. With the integration of Amazon Glacier in S3 you can easily move older dumps to the low-cost archive storage service while having recent dumps at your fingertips. That's why I built this tool.
 
 ## requirements
 * php >5.4
