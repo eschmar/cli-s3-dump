@@ -1,5 +1,28 @@
 # cli-s3-dump
-Dumps your mysql database and sends it compressed to your Amazon S3 Storage. <br>**Instructions following soon**.
+This is a simple console application for dumping your mysql databases and uploading them to an Amazon S3 bucket. With the integration of Amazon Glacier in S3 you can easily move older dumps to the low-cost archive storage service while having recent dumps at your fingertips. That's why I built this tool.
+
+## installation
+// **todo.**
+
+## usage
+```sh
+$ php s3dump.phar dump [--skip-s3] [config] [location]
+```
+
+option|default value|description
+---|---|---
+--skip-s3|-|If set, the dump will not be uploaded to Amazon S3 and remain in the target directory.
+config|``'s3dump.yml'``|YAML config file location. See s3dump_example.yml.
+location|``'dumps/'``|Directory to write temporary dumps to (with trailing slash).
+
+## phar package
+You can use [Box](https://github.com/box-project/box2) to generate your own phar package. The advantage is, that you only have to put 2 files on your webserver: ``s3dump.phar`` and ``s3dump.yml`` (containing your credentials). Simply run:
+
+```sh
+$ curl -LSs http://box-project.org/installer.php | php
+$ php box.phar build -v
+```
+The first line will install box and the second will build the actual binary. Please check the [project website](https://github.com/box-project/box2) for more information.
 
 ## todo
 * [x] move credentials to config file rather than inputs
@@ -7,7 +30,13 @@ Dumps your mysql database and sends it compressed to your Amazon S3 Storage. <br
 * [x] test aws glacier implementation
 * [x] improve naming
 * [ ] ~~add clean command for deleting old dumps~~
-* [ ] check licensing for .phar packageing
+* [x] check licensing for .phar packageing
 * [x] serve .phar package
-* [ ] define repository license
+* [x] define repository license
 * [ ] write usage instructions
+
+## credits
+// **todo.**
+
+## license
+As required by [mysqldump-php](https://github.com/ifsnop/mysqldump-php), this project is open-sourced software licensed under the [GPL license](http://www.gnu.org/copyleft/gpl.html)

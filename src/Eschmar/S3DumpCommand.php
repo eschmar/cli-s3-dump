@@ -57,6 +57,7 @@ class S3DumpCommand extends Command
         $this
             ->setName('dump')
             ->setDescription('Dumps a MySQL database and writes it to Amazon S3')
+            ->addArgument('config', InputArgument::OPTIONAL, 'Use this yaml config file.')
             ->addArgument('location', InputArgument::OPTIONAL, 'Write dumps to this directory (with trailing slash).')
             ->addOption(
                'skip-s3',
@@ -77,6 +78,10 @@ class S3DumpCommand extends Command
     {
         $output->writeln("");
         $start = time();
+
+        if ($input->getArgument('config')) {
+            $this->config_file = $input->getArgument('config');
+        }
 
         if (!file_exists($this->config_file)) {
             $output->writeln(" \033[1;31m[ERROR]: No {$this->config_file} file found.");
