@@ -42,4 +42,4 @@ The first line will install box and the second will build the actual binary. Ple
 * Uses [AWS SDK for PHP](https://github.com/aws/aws-sdk-php) for S3 integration.
 
 ## license
-As required by [mysqldump-php](https://github.com/ifsnop/mysqldump-php), this project is open-sourced software licensed under the [GPL license](http://www.gnu.org/copyleft/gpl.html)
+MIT License. Please check the dependencies for their licsenes.
