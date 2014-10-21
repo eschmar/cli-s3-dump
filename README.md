@@ -8,6 +8,6 @@ Dumps your mysql database and sends it compressed to your Amazon S3 Storage. <br
 * [x] improve naming
 * [ ] ~~add clean command for deleting old dumps~~
 * [ ] check licensing for .phar packageing
-* [ ] serve .phar package
+* [x] serve .phar package
 * [ ] define repository license
 * [ ] write usage instructions
