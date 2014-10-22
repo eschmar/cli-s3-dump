@@ -11,6 +11,6 @@ $ascii = "\n" .
     "\033[1;34m |___/___/\033[1;32m___/ \\_,_|_|_|_| .__/\n" .
     "\033[1;34m          \033[1;32m               |_|   \n";
 
-$console = new Application($ascii, '0.1');
+$console = new Application($ascii, '0.2');
 $console->add(new S3DumpCommand);
 $console->run();

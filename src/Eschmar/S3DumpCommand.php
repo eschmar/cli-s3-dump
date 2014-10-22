@@ -217,6 +217,8 @@ class S3DumpCommand extends Command
         } catch (\Exception $e) {
             return false;
         }
+
+        return rmdir($path);
     }
 
 } // END class S3DumpCommand extends Command

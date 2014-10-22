@@ -10,7 +10,7 @@ This is a simple console application for [generating mysql dumps](https://github
 1. Get the phar:
 
     ```
-    $ curl -OL https://github.com/eschmar/cli-s3-dump/releases/download/v0.1/s3dump.phar
+    $ curl -OL https://github.com/eschmar/cli-s3-dump/releases/download/v0.2/s3dump.phar
     ```
 
 2. Write your credentials into a yaml config file. You can use ``d3dump_example.yml`` as a starting point.
