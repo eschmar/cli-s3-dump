@@ -1,7 +1,7 @@
 {
     "require": {
         "symfony/console": "2.*",
-        "ifsnop/mysqldump-php":"1.*",
+        "ifsnop/mysqldump-php":"1.5",
         "symfony/yaml": "2.*",
         "aws/aws-sdk-php": "2.7.*"
     },
