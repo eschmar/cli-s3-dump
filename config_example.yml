@@ -1,0 +1,15 @@
+database:
+    -
+        user: root
+        password: null
+        name: symfony
+    -
+        user: root
+        password: null
+        name: drupal
+
+aws:
+    s3:
+        key: 'your-aws-access-key-id'
+        secret: 'your-aws-secret-access-key'
+        bucket: 'bucketName'
