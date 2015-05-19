@@ -9,11 +9,11 @@ This is a simple console application for [generating mysql dumps](https://github
 ## installation
 1. Get the phar:
 
-    ```
-    $ curl -OL https://github.com/eschmar/cli-s3-dump/releases/download/v0.2/s3dump.phar
+    ```sh
+    $ curl -OL https://github.com/eschmar/cli-s3-dump/releases/download/v0.3/s3dump.phar
     ```
 
-2. Write your credentials into a yaml config file. You can use ``config_example.yml`` as a starting point.
+2. Write your credentials into a yaml config file. You can use ``config_example.yml`` as a starting point or generate a yaml file using ``$ php s3dump.phar generate-config [...]``.
 
 *You may also use the tool without the phar binary. Just fork/clone/download the project, install all dependencies using composer and you're all set.*
 
