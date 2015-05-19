@@ -241,7 +241,7 @@ class S3DumpCommand extends Command
             $dump->start($this->dump_dir . $filename);
 
         } catch (\Exception $e) {
-            $this->output->writeln(" \033[1;31m[ERROR]: " . $e->getMessage());
+            $this->output->writeln(" \033[1;31m[ERROR]: " . $e->getMessage() . ".\033[0;0m");
             return false;
         }
 
