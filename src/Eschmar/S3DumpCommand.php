@@ -33,11 +33,18 @@ class S3DumpCommand extends Command
     protected $timestamp_format = 'Y-m-d_H-i-s';
 
     /**
-     * Default dump target location.
+     * Default local dump target location.
      *
      * @var string
      **/
     protected $dump_dir = 'dumps/';
+
+    /**
+     * Bucket target location.
+     *
+     * @var string
+     **/
+    protected $bucket_dir;
 
     /**
      * Configuration read from config file.
@@ -79,6 +86,13 @@ class S3DumpCommand extends Command
                InputOption::VALUE_NONE,
                'If set, the dump will not be uploaded to Amazon S3 and remain in the target directory.'
             )
+            ->addOption(
+               'bucket-dir',
+               null,
+               InputOption::VALUE_OPTIONAL,
+               'Where should the dumps be stored (e.g. "dumps/")?',
+               ''
+            )
         ;
     }
 
@@ -91,7 +105,13 @@ class S3DumpCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->output = $output;
+        $this->bucket_dir = $input->getArgument('bucket-dir');
         $output->writeln("");
+
+        // make sure the bucket dir has a trailing slash
+        if ($this->bucket_dir != '') {
+            $this->bucket_dir = rtrim($this->bucket_dir, '/\\') . '/';
+        }
 
         if ($input->getArgument('config')) {
             $this->config_file = $input->getArgument('config');
@@ -263,7 +283,7 @@ class S3DumpCommand extends Command
                 ));
 
                 $result = $client->putObject([
-                    'Key' => $db['name'] . '/' . $filename,
+                    'Key' => $this->bucket_dir . $db['name'] . '/' . $filename,
                     'Bucket' => $this->config['aws']['s3']['bucket'],
                     'Body' => fopen($this->dump_dir.$filename, 'r'),
                     'ContentType' => 'application/gzip'
