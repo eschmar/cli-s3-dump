@@ -10,7 +10,7 @@ This is a simple console application for [generating mysql dumps](https://github
 1. Get the phar:
 
     ```sh
-    $ curl -OL https://github.com/eschmar/cli-s3-dump/releases/download/v0.3/s3dump.phar
+    $ curl -OL https://github.com/eschmar/cli-s3-dump/releases/download/v0.4/s3dump.phar
     ```
 
 2. Write your credentials into a yaml config file. You can use ``config_example.yml`` as a starting point or generate a yaml file using ``$ php s3dump.phar generate-config [...]``.
@@ -25,6 +25,7 @@ $ php s3dump.phar dump [--skip-s3] [config] [location]
 option|default value|description
 ---|---|---
 ``--skip-s3``|-|If set, the dump will not be uploaded to Amazon S3 and remain in the target directory.
+``--bucket-dir``|``''``|Define which subdir the dumps should be saved to, for example ``'dumps/'`` (with trailing slash).
 ``config``|``'s3dump.yml'``|YAML config file location. See config_example.yml.
 ``location``|``'dumps/'``|Directory to write temporary dumps to (with trailing slash).
 
