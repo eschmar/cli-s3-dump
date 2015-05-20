@@ -105,7 +105,7 @@ class S3DumpCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->output = $output;
-        $this->bucket_dir = $input->getArgument('bucket-dir');
+        $this->bucket_dir = $input->getOption('bucket-dir');
         $output->writeln("");
 
         // make sure the bucket dir has a trailing slash
