@@ -1,6 +1,6 @@
-# cli-s3-dump
-
 [![Join the chat at https://gitter.im/eschmar/cli-s3-dump](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/eschmar/cli-s3-dump?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
+# cli-s3-dump
 This is a simple console application for [generating mysql dumps](https://github.com/ifsnop/mysqldump-php) and storing them in an [Amazon S3 Bucket](https://github.com/aws/aws-sdk-php) via PHP. With the integration of Amazon Glacier in S3 you can easily move older dumps to the low-cost archive storage service while having recent dumps at your fingertips. That's why I built this tool.
 
 ## requirements
