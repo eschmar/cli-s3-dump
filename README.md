@@ -6,6 +6,7 @@ This is a simple console application for [generating mysql dumps](https://github
 ## requirements
 * php >5.4
 * php-cli
+* php-curl
 * Amazon S3 Bucket
 
 ## installation
